@@ -29,7 +29,7 @@ class GithubServiceTest {
     @Test
     public void getReposByUser_WrongUsername(){
         String username = "non existing user 1234";
-
-        assertThatThrownBy(()->restTemplate.getForEntity("/github/" + username, GithubGitRepo[].class)).isInstanceOf(RestClientException.class);
+        var response = restTemplate.getForEntity("/github/" + username, GithubGitRepo[].class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }

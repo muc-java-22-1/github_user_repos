@@ -1,12 +1,14 @@
 package com.github.mysterix5.github_user_repos.github;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/github")
@@ -19,15 +21,13 @@ public class GithubController {
     }
 
     @GetMapping("/{user}")
-    public GithubGitRepo[] getReposByUser(@PathVariable String user){
-
+    public ResponseEntity<GithubGitRepo[]> getReposByUser(@PathVariable String user){
         return githubService.getGithubRepoInfoByUsername(user);
     }
 
     @GetMapping("/strings/{user}")
-    public List<String> getRepoNamesByUser(@PathVariable String user){
-
-        return Arrays.stream(githubService.getGithubRepoInfoByUsername(user)).map(GithubGitRepo::getName).toList();
+    public ResponseEntity<List<String>> getRepoNamesByUser(@PathVariable String user){
+        return githubService.getGithubRepoStringsByUsername(user);
     }
 
 }
